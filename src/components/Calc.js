@@ -9,17 +9,10 @@ function Calc({buttons, total}) {
     const [initState, setState] = useState(initialValue);
     const [initTotal, setTotal] = useState(total)
 
-    const handleChange = (ev) => {
-        setState((prevState)=> '09')
-    };
-
-    // let compoundValue = [];
-    // compoundValue = [...initTotal]
     console.log(initTotal);
-    // console.log(compoundValue);
     
     const handleClick = (ev) => {
-        const {name, value} = ev.target;
+        const {value} = ev.target;
         console.log(typeof value);
 
         setState((prev) => {
@@ -30,7 +23,6 @@ function Calc({buttons, total}) {
                 let arithSymbol = /[+-/x.]/gi
                 let num;
                 if (patternNum.test(value)){
-                    // let stringNum = `${inputValue.value}` 
                     num = +(`${inputValue.value}` + `${value}`);
                     setTotal((prev)=> [[...prev, value].join('')])
                     console.log(num);
