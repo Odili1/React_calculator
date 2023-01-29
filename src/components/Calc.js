@@ -23,10 +23,10 @@ function Calc({buttons, total}) {
                 let arithSymbol = /[+-/x.]/gi
                 let num;
                 if (patternNum.test(value)){
-                    num = +(`${inputValue.value}` + `${value}`);
+                    num = +(`${inputValue.value}${value}`);
                     setTotal((prev)=> [[...prev, value].join('')])
                     console.log(num);
-                    return isNaN(num) ? +((`${inputValue.value}` + `${value}`).slice(-1)) : Math.abs(num)
+                    return isNaN(num) ? +((`${inputValue.value}${value}`).slice(-1)) : Math.abs(num)
                 }
 
                 if (arithSymbol.test(value)) {
@@ -85,10 +85,10 @@ function Calc({buttons, total}) {
             </div>
         </div>
         <div className='calc-input'>
-            <input onChange={handleChange} name={'input'} type={'text'} value={initState.input.value}/>
+            <input name={'input'} type={'text'} value={initState.input.value}/>
         </div>
         <div className='calc-buttons'>
-            {buttons.map(([classes, el]) => <button onClick={handleClick} name={classes} className={classes} value={el} >{el}</button>)}
+            {buttons.map(([classes, el], id) => <button onClick={handleClick} key={id} name={classes} className={classes} value={el} >{el}</button>)}
         </div>
     </div>
   )

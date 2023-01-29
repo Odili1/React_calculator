@@ -17,7 +17,7 @@ button{
 }
 
 .container{
-  width: 80%;
+  max-width: 370px;
   margin: auto;
   height: 80%;
   box-sizing: border-box;
@@ -130,7 +130,7 @@ input{
 
 @media (min-width: 920px){
   .container{
-    width: 70%;
+    max-width: 370px;
     margin: auto;
     height: 70%;
     box-sizing: border-box;
