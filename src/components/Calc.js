@@ -31,15 +31,15 @@ function Calc({buttons, total}) {
 
                 if (arithSymbol.test(value)) {
                     setTotal((prev) => [...prev, (value=== 'x' ? '*' : value)])
-                    return value === '.' ? inputValue.value + value : value
+                    return value === '.' ? inputValue.value + value : value;
                 }
 
                 if (value === 'DEL') {
                     let stringNum = `${inputValue.value}`
                     let newNum = stringNum.slice(0, stringNum.length - 1);
-                    setTotal((prev) => [newNum])
-                    console.log(newNum);
-                    return newNum;
+                    setTotal((prev) => ((newNum.length === 0 && newNum.length) || [newNum]));
+                    console.log(newNum.length);
+                    return newNum.length === 0 ? 0 : newNum;
                 }
 
                 if (value === 'RESET') {
@@ -48,6 +48,7 @@ function Calc({buttons, total}) {
                 }
 
                 if (value === '='){
+                    // eslint-disable-next-line
                     let evaluate = eval(initTotal.join(''));
                     setTotal((prev)=>[])
                     return evaluate
@@ -85,10 +86,10 @@ function Calc({buttons, total}) {
             </div>
         </div>
         <div className='calc-input'>
-            <input name={'input'} type={'text'} value={initState.input.value}/>
+            <input name={'input'} type={'text'} onChange={null} value={initState.input.value}/>
         </div>
         <div className='calc-buttons'>
-            {buttons.map(([classes, el], id) => <button onClick={handleClick} key={id} name={classes} className={classes} value={el} >{el}</button>)}
+            {buttons.map(([classes, el], id) => <button onClick={handleClick} name={classes} className={classes} key={id} value={el} >{el}</button>)}
         </div>
     </div>
   )
