@@ -159,7 +159,7 @@ input{
 
 @media (max-width: 300px) {
   .container{
-    max-width: 90%;
+    max-width: 97%;
     margin: auto;
     height: 80%;
     box-sizing: border-box;
