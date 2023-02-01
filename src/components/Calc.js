@@ -26,12 +26,12 @@ function Calc({buttons, total}) {
                     num = +(`${inputValue.value}${value}`);
                     setTotal((prev)=> [[...prev, value].join('')])
                     console.log(num);
-                    return isNaN(num) ? +((`${inputValue.value}${value}`).slice(-1)) : Math.abs(num)
+                    return isNaN(num) ? ((`${inputValue.value} ${value}`)) : Math.abs(num)
                 }
 
                 if (arithSymbol.test(value)) {
                     setTotal((prev) => [...prev, (value=== 'x' ? '*' : value)])
-                    return value === '.' ? inputValue.value + value : value;
+                    return value === '.' ? inputValue.value + value : `${inputValue.value} ${value}`;
                 }
 
                 if (value === 'DEL') {
@@ -48,10 +48,14 @@ function Calc({buttons, total}) {
                 }
 
                 if (value === '='){
-                    // eslint-disable-next-line
-                    let evaluate = eval(initTotal.join(''));
-                    setTotal((prev)=>[])
-                    return evaluate
+                    try{
+                        // eslint-disable-next-line
+                        let evaluate = eval(initTotal.join(''));
+                        setTotal((prev)=>[`${evaluate}`])
+                        return evaluate
+                    }catch (err){
+                        return 'SyntaxError'
+                    }
                 }
 
             }
