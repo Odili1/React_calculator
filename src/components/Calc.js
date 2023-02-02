@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 function Calc({buttons, total}) {
     let initialValue = [...buttons].reduce((acc, [key, ]) => {
-        return acc = {...acc, [key]: {value: ''}, input: {value: 0}}
+        return acc = {...acc, [key]: {value: ''}, input: {value: 0,  disabled: false}}
     }, {});
     // console.log(initialValue);
 
@@ -26,46 +26,75 @@ function Calc({buttons, total}) {
                     num = +(`${inputValue.value}${value}`);
                     setTotal((prev)=> [[...prev, value].join('')])
                     console.log(num);
-                    return isNaN(num) ? ((`${inputValue.value} ${value}`)) : Math.abs(num)
+                    return isNaN(num) ? {
+                        ...prev.input,
+                        value: (`${inputValue.value}${value}`)
+                    } : {
+                        ...prev.input,
+                        value: Math.abs(num)
+                    } 
                 }
 
                 if (arithSymbol.test(value)) {
                     setTotal((prev) => [...prev, (value=== 'x' ? '*' : value)])
-                    return value === '.' ? inputValue.value + value : `${inputValue.value} ${value}`;
+                    return value === '.' ? ({
+                        ...prev.input,
+                        value: (inputValue.value + value)
+                    }) : ({
+                        ...prev.input,
+                        value: `${inputValue.value} ${value} `
+                    });
                 }
 
                 if (value === 'DEL') {
                     let stringNum = `${inputValue.value}`
-                    let newNum = stringNum.slice(0, stringNum.length - 1);
-                    setTotal((prev) => ((newNum.length === 0 && newNum.length) || [newNum]));
-                    console.log(newNum.length);
-                    return newNum.length === 0 ? 0 : newNum;
+                    let newNum = stringNum.slice(0, stringNum.length - 1).trim();
+                    console.log(initTotal);
+                    console.log(newNum);
+                    let newTotal = initTotal.join('').slice(0, initTotal.join('').length - 1);
+                    setTotal((prev) => ((newTotal.length === 0 && newTotal.length) || [newTotal]));
+                    console.log(newTotal.length);
+                    return newNum.length === 0 ? ({
+                        ...prev.input,
+                        value: 0
+                    }) : ({
+                        ...prev.input,
+                        value: newNum
+                    })
                 }
 
                 if (value === 'RESET') {
                     setTotal((prev)=>[])
-                    return 0;
+                    console.log(prev.input);
+                    return {
+                        ...prev.input,
+                        value: 0,
+                        disabled: false
+                    }
                 }
 
                 if (value === '='){
                     try{
                         // eslint-disable-next-line
-                        let evaluate = eval(initTotal.join(''));
+                        let evaluate = eval(initTotal.join('')).toFixed(6);
                         setTotal((prev)=>[`${evaluate}`])
-                        return evaluate
+                        return {
+                            ...prev.input,
+                            value: evaluate
+                        }
                     }catch (err){
-                        return 'SyntaxError'
+                        return {
+                            ...prev.input,
+                            value: 'SyntaxError',
+                            disabled: true
+                        };
                     }
                 }
-
             }
 
             return ({
                 ...prev,
-                input: {
-                    ...prev.input,
-                    value: math()
-                }
+                input: math()
             })
         })
     }
@@ -93,7 +122,7 @@ function Calc({buttons, total}) {
             <input name={'input'} type={'text'} onChange={null} value={initState.input.value}/>
         </div>
         <div className='calc-buttons'>
-            {buttons.map(([classes, el], id) => <button onClick={handleClick} name={classes} className={classes} key={id} value={el} >{el}</button>)}
+            {buttons.map(([classes, el], id) => <button onClick={handleClick} name={classes} disabled={(classes === 'reset') ? false : initState.input.disabled} className={classes} key={id} value={el} >{el}</button>)}
         </div>
     </div>
   )
