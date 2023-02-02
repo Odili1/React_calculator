@@ -76,7 +76,7 @@ function Calc({buttons, total}) {
                 if (value === '='){
                     try{
                         // eslint-disable-next-line
-                        let evaluate = eval(initTotal.join('')).toFixed(6);
+                        let evaluate = Math.abs(eval(initTotal.join('')).toFixed(6));
                         setTotal((prev)=>[`${evaluate}`])
                         return {
                             ...prev.input,
